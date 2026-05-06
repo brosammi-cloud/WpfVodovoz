@@ -1,0 +1,28 @@
+version: '3.9'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: wpf_test_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: testdb
+      MYSQL_USER: appuser
+      MYSQL_PASSWORD: 1234
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./db:/docker-entrypoint-initdb.d
+    command: --default-authentication-plugin=mysql_native_password
+
+  adminer:
+    image: adminer
+    container_name: wpf_test_adminer
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+
+volumes:
+  mysql_data:
